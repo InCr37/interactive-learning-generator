@@ -1,144 +1,144 @@
-# AI对话脚本示例
+# AI Conversation Script Example
 
-## 场景说明
+## Scenario Description
 
-此脚本展示如何将渐进式互动学习生成器输出的JSON数据转换为AI对话。脚本模拟学习者与AI助手的交互过程，包含欢迎、模块学习、选择题回答、反馈和进度更新。
+This script demonstrates how to convert JSON data output from the Progressive Interactive Learning Generator into AI conversations. The script simulates the interaction between a learner and an AI assistant, including welcome, module learning, multiple-choice answering, feedback, and progress updates.
 
-## 对话流程
+## Conversation Flow
 
-### 1. 欢迎阶段
+### 1. Welcome Phase
 ```
-[AI助手] 欢迎开始"布尔代数基础：安全系统设计场景"学习之旅！
+[AI Assistant] Welcome to the "Boolean Algebra Basics: Security System Design Scenario" learning journey!
 
-本次学习包含 2 个互动模块，涵盖 3 个核心概念。
-我将作为你的学习助手，引导你通过渐进式学习掌握这些知识。
+This learning includes 2 interactive modules, covering 3 core concepts.
+I will serve as your learning assistant, guiding you through progressive learning to master this knowledge.
 
-学习过程中，你可以：
-• 回答问题并立即获得反馈
-• 请求提示和额外帮助
-• 按照自己的节奏学习
+During learning, you can:
+• Answer questions and receive immediate feedback
+• Request hints and additional help
+• Learn at your own pace
 
-准备好了吗？让我们开始吧！
-```
-
-### 2. 模块1：安全系统设计场景
-```
-[AI助手] ## 安全系统设计场景
-
-模块类型：引导式对话
-预计时间：8分钟
-难度：中等
-
-欢迎来到安全系统设计项目。作为安全工程师，你的任务是设计一个可靠的访问控制系统。
-
-大楼有不同的区域：公共区、办公区、服务器机房。我们需要为每个区域设置适当的访问控制。
-
-**决策点**：
-
-你会选择哪种逻辑门来实现"只有刷卡且输入正确密码才能进入服务器机房"？
-
-**选择**：
-
-1. AND门
-2. OR门
-3. NOT门
+Are you ready? Let's begin!
 ```
 
-### 3. 用户回答与反馈
+### 2. Module 1: Security System Design Scenario
 ```
-[用户] 选择1：AND门
+[AI Assistant] ## Security System Design Scenario
 
-[AI助手] 正确！AND门需要两个输入都为真时才输出真，完美匹配"刷卡且输入密码"的要求。
+Module Type: Guided Dialogue
+Estimated Time: 8 minutes
+Difficulty: Medium
 
-很好！你已掌握AND门在安全系统中的应用。现在让我们继续设计其他区域的访问控制。
+Welcome to the security system design project. As a security engineer, your task is to design a reliable access control system.
+
+The building has different areas: public area, office area, and server room. We need to set appropriate access control for each area.
+
+**Decision Point**:
+
+Which logic gate would you choose to implement "only swiping card AND entering correct password can enter the server room"?
+
+**Choices**:
+
+1. AND gate
+2. OR gate
+3. NOT gate
 ```
 
-### 4. 模块2：知识检查点
+### 3. User Answer and Feedback
 ```
-[AI助手] ## 知识检查点：AND门真值表
+[User] Choice 1: AND gate
 
-模块类型：知识检查点
-预计时间：5分钟
-难度：中等
+[AI Assistant] Correct! AND gate requires both inputs to be true before outputting true, perfectly matching the "swipe card AND enter password" requirement.
 
-### 知识检查点
+Well done! You've mastered the application of AND gate in security systems. Now let's continue designing access control for other areas.
+```
 
-对于AND门，当输入A=1, B=0时，输出是什么？
+### 4. Module 2: Knowledge Checkpoint
+```
+[AI Assistant] ## Knowledge Checkpoint: AND Gate Truth Table
 
-**选项**：
+Module Type: Knowledge Checkpoint
+Estimated Time: 5 minutes
+Difficulty: Medium
+
+### Knowledge Checkpoint
+
+For AND gate, when input A=1, B=0, what is the output?
+
+**Options**:
 
 1. [ ] 0
 2. [ ] 1
-3. [ ] 不确定
+3. [ ] Uncertain
 
-💡 提示：如果你需要帮助，可以请求提示。每个问题最多可尝试3次。
+💡 Hint: If you need help, you can request hints. Each question allows up to 3 attempts.
 ```
 
-### 5. 用户回答与渐进提示
+### 5. User Answer and Progressive Hints
 ```
-[用户] 我不确定，请求提示。
+[User] I'm not sure, request hints.
 
-[AI助手] 💡 提示（级别1）：回想AND门的定义：只有所有输入都为真时输出才为真。
+[AI Assistant] 💡 Hint (Level 1): Recall the definition of AND gate: output is true only when all inputs are true.
 
-[用户] 我还是不确定。
+[User] I'm still not sure.
 
-[AI助手] 💡 提示（级别2）：真值表：A=1, B=0 → 输出=0
+[AI Assistant] 💡 Hint (Level 2): Truth table: A=1, B=0 → Output=0
 
-[用户] 答案是0。
+[User] The answer is 0.
 
-[AI助手] ✅ 正确！AND门需要所有输入都为1时才输出1。
-```
-
-### 6. 学习进度更新
-```
-[AI助手] ---
-
-**学习进度**：2/2 (100%)
-
-准备好继续下一个模块了吗？
+[AI Assistant] ✅ Correct! AND gate outputs 1 only when all inputs are 1.
 ```
 
-### 7. 完成总结
+### 6. Learning Progress Update
 ```
-[AI助手] 🎉 恭喜！你已完成"布尔代数基础：安全系统设计场景"的所有学习模块。
+[AI Assistant] ---
 
-**学习总结**：
-• 完成模块：2/2
-• 学习时间：约13分钟
-• 掌握概念：3个
+**Learning Progress**: 2/2 (100%)
 
-你已经掌握了相关知识和技能。继续保持学习热情！
+Ready to continue to the next module?
 ```
 
-## 新设计原则展示
+### 7. Completion Summary
+```
+[AI Assistant] 🎉 Congratulations! You have completed all learning modules in "Boolean Algebra Basics: Security System Design Scenario".
 
-### 高频提问
-- 每个关键概念至少一个问题：AND门功能、真值表
-- 问题类型多样化：情境选择题、知识检查点
-- 提问时机分散：在对话中和对话后
+**Learning Summary**:
+• Modules Completed: 2/2
+• Learning Time: Approximately 13 minutes
+• Concepts Mastered: 3
 
-### 解题机会
-- 最多3次尝试机会
-- 渐进式提示：3级提示系统
-- 错误触发建设性反馈而非惩罚
+You have mastered the relevant knowledge and skills. Keep up your learning enthusiasm!
+```
 
-### 难度分级
-- 基础难度：真值表记忆题
-- 应用难度：情境应用题
-- 成功阈值：70%正确率目标
+## New Design Principles Display
 
-### 智能调整
-- 基于用户表现动态调整提示级别
-- 根据尝试次数提供额外指导
-- 记录学习表现用于后续个性化
+### High-Frequency Questioning
+- At least one question for each key concept: AND gate function, truth table
+- Diverse question types: contextual multiple choice, knowledge checkpoints
+- Question timing distributed: during and after dialogues
 
-## 平台适配示例
+### Problem-Solving Opportunities
+- Up to 3 attempts allowed
+- Progressive hints: 3-level hint system
+- Errors trigger constructive feedback rather than punishment
 
-### WorkBuddy平台格式
+### Difficulty Scaffolding
+- Basic difficulty: Truth table memorization questions
+- Applied difficulty: Contextual application questions
+- Success threshold: 70% correct rate target
+
+### Intelligent Adjustment
+- Dynamically adjusts hint levels based on user performance
+- Provides additional guidance based on number of attempts
+- Records learning performance for subsequent personalization
+
+## Platform Adaptation Examples
+
+### WorkBuddy Platform Format
 ```json
 {
   "role": "assistant",
-  "content": "### 知识检查点\n\n对于AND门，当输入A=1, B=0时，输出是什么？\n\n**选项**：\n\n1. [ ] 0\n2. [ ] 1\n3. [ ] 不确定\n\n💡 你有最多3次尝试机会。",
+  "content": "### Knowledge Checkpoint\n\nFor AND gate, when input A=1, B=0, what is the output?\n\n**Options**:\n\n1. [ ] 0\n2. [ ] 1\n3. [ ] Uncertain\n\n💡 You have up to 3 attempts.",
   "metadata": {
     "messageType": "quiz_question",
     "interactiveElements": {
@@ -147,7 +147,7 @@
         "options": [
           {"id": "opt_1", "text": "0", "isCorrect": true},
           {"id": "opt_2", "text": "1", "isCorrect": false},
-          {"id": "opt_3", "text": "不确定", "isCorrect": false}
+          {"id": "opt_3", "text": "Uncertain", "isCorrect": false}
         ],
         "correctAnswers": ["opt_1"],
         "maxAttempts": 3,
@@ -158,39 +158,39 @@
 }
 ```
 
-### Claude平台适配
+### Claude Platform Adaptation
 ```
-Human: 现在开始学习布尔代数基础。首先，我们有一个安全系统设计场景。
+Human: Now let's start learning Boolean Algebra basics. First, we have a security system design scenario.
 
-Assistant: 欢迎！我是你的学习助手。让我们开始吧。
+Assistant: Welcome! I'm your learning assistant. Let's begin.
 
-[对话内容...]
+[Dialogue content...]
 
-Human: 对于AND门，当输入A=1, B=0时，输出是什么？
+Human: For AND gate, when input A=1, B=0, what is the output?
 
-Assistant: 这是知识检查点。请选择：
+Assistant: This is a knowledge checkpoint. Please choose:
 A) 0
 B) 1
-C) 不确定
+C) Uncertain
 
-如果你需要提示，可以告诉我。
+If you need hints, let me know.
 ```
 
-## 使用建议
+## Usage Suggestions
 
-1. **节奏控制**：每个模块后暂停，让学习者有时间思考
-2. **提示策略**：仅在用户请求或多次错误后提供提示
-3. **反馈时机**：立即反馈，强化学习效果
-4. **进度可视化**：定期展示学习进度，保持动力
-5. **个性化调整**：根据学习者表现调整后续问题难度
+1. **Pacing Control**: Pause after each module to give learners time to think
+2. **Hint Strategy**: Provide hints only when user requests or after multiple errors
+3. **Feedback Timing**: Immediate feedback to reinforce learning effects
+4. **Progress Visualization**: Regularly display learning progress to maintain motivation
+5. **Personalized Adjustment**: Adjust subsequent question difficulty based on learner performance
 
-## 扩展可能性
+## Expansion Possibilities
 
-- **多语言支持**：根据输入材料语言自动切换对话语言
-- **无障碍访问**：为视障学习者提供音频描述版本
-- **协作学习**：支持小组讨论和同伴互评
-- **学习分析**：收集学习数据用于改进教学设计
+- **Multi-language Support**: Automatically switch conversation language based on input material language
+- **Accessibility**: Provide audio description version for visually impaired learners
+- **Collaborative Learning**: Support group discussions and peer evaluation
+- **Learning Analytics**: Collect learning data to improve instructional design
 
 ---
 
-*此脚本由渐进式互动学习生成器v1.2.0生成，包含高频提问、解题机会、难度分级、智能调整等新设计原则。*
+*This script was generated by Progressive Interactive Learning Generator v1.2.0, including new design principles: high-frequency questioning, problem-solving opportunities, difficulty scaffolding, and intelligent adjustment.*

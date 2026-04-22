@@ -1,13 +1,13 @@
 {
   "version": "1.2.0",
-  "language": "zh-CN",
-  "title": "布尔代数基础：安全系统设计场景",
-  "description": "通过安全系统设计角色扮演渐进式学习布尔代数概念",
-  "scenario": "你是一名安全系统工程师，需要为大楼设计访问控制系统",
+  "language": "en-US",
+  "title": "Boolean Algebra Basics: Security System Design Scenario",
+  "description": "Progressive learning of Boolean algebra concepts through security system design role-play",
+  "scenario": "You are a security system engineer who needs to design an access control system for a building",
   "learningObjectives": [
-    "理解布尔代数在现实场景中的应用",
-    "掌握AND、OR、NOT逻辑门的功能",
-    "能够构建和分析简单真值表"
+    "Understand the application of Boolean algebra in real-world scenarios",
+    "Master the functions of AND, OR, NOT logic gates",
+    "Be able to construct and analyze simple truth tables"
   ],
   "designPrinciplesApplied": [
     "progressive-disclosure",
@@ -22,42 +22,42 @@
     {
       "id": "dialogue_1",
       "type": "dialogue",
-      "title": "安全系统设计场景",
-      "learningObjective": "理解布尔代数在现实场景中的应用",
-      "content": "你正在设计一个大楼的访问控制系统。只有授权人员才能进入敏感区域。",
+      "title": "Security System Design Scenario",
+      "learningObjective": "Understand the application of Boolean algebra in real-world scenarios",
+      "content": "You are designing an access control system for a building. Only authorized personnel can enter sensitive areas.",
       "dialogue": {
-        "introduction": "欢迎来到安全系统设计项目。作为安全工程师，你的任务是设计一个可靠的访问控制系统。",
-        "exploration": "大楼有不同的区域：公共区、办公区、服务器机房。我们需要为每个区域设置适当的访问控制。",
+        "introduction": "Welcome to the security system design project. As a security engineer, your task is to design a reliable access control system.",
+        "exploration": "The building has different areas: public area, office area, and server room. We need to set appropriate access control for each area.",
         "branches": [
           {
             "id": "branch_1",
-            "prompt": "你会选择哪种逻辑门来实现\"只有刷卡且输入正确密码才能进入服务器机房\"？",
+            "prompt": "Which logic gate would you choose to implement \"only swiping card AND entering correct password can enter the server room\"?",
             "options": [
               {
                 "id": "opt_a",
-                "text": "AND门",
+                "text": "AND gate",
                 "isCorrect": true,
-                "feedback": "正确！AND门需要两个输入都为真时才输出真，完美匹配\"刷卡且输入密码\"的要求。",
+                "feedback": "Correct! AND gate requires both inputs to be true before outputting true, perfectly matching the \"swipe card AND enter password\" requirement.",
                 "nextStep": "dialogue_2_a"
               },
               {
                 "id": "opt_b",
-                "text": "OR门",
+                "text": "OR gate",
                 "isCorrect": false,
-                "feedback": "OR门在任一输入为真时就输出真，这意味着只要刷卡或输入密码就能进入，不符合安全要求。",
-                "remedialContent": "让我们回顾一下：AND门需要所有条件同时满足，OR门只需要任一条件满足。"
+                "feedback": "OR gate outputs true when any input is true, which means just swiping card OR entering password allows entry, not meeting security requirements.",
+                "remedialContent": "Let's review: AND gate requires all conditions to be met simultaneously, OR gate requires only one condition to be met."
               },
               {
                 "id": "opt_c",
-                "text": "NOT门",
+                "text": "NOT gate",
                 "isCorrect": false,
-                "feedback": "NOT门是取反操作，不符合此场景。",
-                "remedialContent": "NOT门只有一个输入，输出与输入相反。它用于反转信号，而不是组合条件。"
+                "feedback": "NOT gate is an inversion operation, not suitable for this scenario.",
+                "remedialContent": "NOT gate has only one input, outputting the opposite of the input. It's used to invert signals, not to combine conditions."
               }
             ]
           }
         ],
-        "conclusion": "很好！你已掌握AND门在安全系统中的应用。现在让我们继续设计其他区域的访问控制。"
+        "conclusion": "Well done! You've mastered the application of AND gate in security systems. Now let's continue designing access control for other areas."
       },
       "difficulty": 5,
       "estimatedTime": 8
@@ -65,27 +65,27 @@
     {
       "id": "quiz_1",
       "type": "quiz",
-      "title": "知识检查点：AND门真值表",
-      "learningObjective": "掌握逻辑门真值表",
-      "content": "测试你对AND门功能的理解",
+      "title": "Knowledge Checkpoint: AND Gate Truth Table",
+      "learningObjective": "Master logic gate truth tables",
+      "content": "Test your understanding of AND gate function",
       "quiz": {
-        "questionStem": "对于AND门，当输入A=1, B=0时，输出是什么？",
+        "questionStem": "For AND gate, when input A=1, B=0, what is the output?",
         "questionType": "single_choice",
         "options": [
           { "id": "opt_1", "text": "0", "isCorrect": true },
           { "id": "opt_2", "text": "1", "isCorrect": false },
-          { "id": "opt_3", "text": "不确定", "isCorrect": false }
+          { "id": "opt_3", "text": "Uncertain", "isCorrect": false }
         ],
         "correctAnswers": ["opt_1"],
         "feedback": {
-          "correct": "正确！AND门需要所有输入都为1时才输出1。",
-          "incorrect": "再想想，AND门需要所有输入都为1时才输出1。"
+          "correct": "Correct! AND gate outputs 1 only when all inputs are 1.",
+          "incorrect": "Think again, AND gate outputs 1 only when all inputs are 1."
         },
         "maxAttempts": 3,
         "progressiveHints": [
-          { "level": 1, "text": "回想AND门的定义：只有所有输入都为真时输出才为真。" },
-          { "level": 2, "text": "真值表：A=1, B=0 → 输出=0" },
-          { "level": 3, "text": "AND门相当于逻辑\"与\"操作，需要所有条件同时满足。" }
+          { "level": 1, "text": "Recall the definition of AND gate: output is true only when all inputs are true." },
+          { "level": 2, "text": "Truth table: A=1, B=0 → Output=0" },
+          { "level": 3, "text": "AND gate is equivalent to logical \"AND\" operation, requiring all conditions to be met simultaneously." }
         ],
         "adaptiveMetadata": {
           "difficultyLevel": "basic",
@@ -113,7 +113,7 @@
     "adaptiveCapable": true
   },
   "metadata": {
-    "sourceMaterial": "布尔代数讲义",
+    "sourceMaterial": "Boolean algebra handout",
     "generatedAt": "2026-04-18T14:44:00Z",
     "aiConversationReady": true,
     "platformCompatibility": ["workbuddy", "claude", "openai", "generic"]

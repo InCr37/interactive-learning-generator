@@ -1,41 +1,41 @@
-# 布尔代数基础
+# Boolean Algebra Basics
 
-## 逻辑运算
+## Logical Operations
 
-布尔代数是一种处理真假值的代数系统，基于三种基本运算：
+Boolean algebra is an algebraic system dealing with true/false values, based on three fundamental operations:
 
-### AND（与运算）
-- 符号：∧ 或 ·
-- 真值表：仅当所有输入为真时输出为真
-- 示例：A AND B = 1 当且仅当 A=1 且 B=1
+### AND (Conjunction)
+- Symbol: ∧ or ·
+- Truth table: Output is true only when all inputs are true
+- Example: A AND B = 1 if and only if A=1 and B=1
 
-### OR（或运算）
-- 符号：∨ 或 +
-- 真值表：至少一个输入为真时输出为真
-- 示例：A OR B = 1 当 A=1 或 B=1 时
+### OR (Disjunction)
+- Symbol: ∨ or +
+- Truth table: Output is true when at least one input is true
+- Example: A OR B = 1 when A=1 or B=1
 
-### NOT（非运算）
-- 符号：¬ 或 !
-- 真值表：输出与输入相反
-- 示例：NOT A = 1 当 A=0 时
+### NOT (Negation)
+- Symbol: ¬ or !
+- Truth table: Output is opposite of input
+- Example: NOT A = 1 when A=0
 
-## 逻辑门
+## Logic Gates
 
-逻辑门是实现布尔运算的电子元件：
+Logic gates are electronic components that implement Boolean operations:
 
-1. **AND门**：实现AND运算
-2. **OR门**：实现OR运算  
-3. **NOT门**：实现NOT运算
-4. **NAND门**：AND后接NOT
-5. **NOR门**：OR后接NOT
-6. **XOR门**：异或运算
+1. **AND Gate**: Implements AND operation
+2. **OR Gate**: Implements OR operation
+3. **NOT Gate**: Implements NOT operation
+4. **NAND Gate**: AND followed by NOT
+5. **NOR Gate**: OR followed by NOT
+6. **XOR Gate**: Exclusive OR operation
 
-## 应用场景
+## Application Scenarios
 
-### 安全系统
-- AND门用于"双因素认证"：需要刷卡AND输入密码
-- OR门用于"备用访问"：可以使用员工卡OR访客卡
+### Security Systems
+- AND gate for "two-factor authentication": requires card swipe AND password entry
+- OR gate for "backup access": can use employee card OR visitor card
 
-### 电路设计
-- 使用逻辑门组合构建复杂功能
-- 真值表用于验证电路行为
+### Circuit Design
+- Use combinations of logic gates to build complex functions
+- Truth tables for verifying circuit behavior
