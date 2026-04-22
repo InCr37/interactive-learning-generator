@@ -68,7 +68,3 @@ src/
 ├── outputs/             # JSON/HTML rendering
 └── ai_adapter/         # AI conversation integration
 ```
-
-## License
-
-MIT
