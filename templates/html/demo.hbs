@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}} - 互动学习演示</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="learning-container">
+    <header class="learning-header">
+      <h1>{{title}}</h1>
+      <div class="learning-meta">
+        <span class="meta-item">模块: {{learningData.metadata.totalModules}}</span>
+        <span class="meta-item">概念: {{learningData.metadata.totalConcepts}}</span>
+        <span class="meta-item">预计时间: {{learningData.metadata.estimatedLearningTime}}分钟</span>
+      </div>
+    </header>
+    
+    <main class="learning-main">
+      <div class="module-navigation">
+        <nav id="module-nav">
+          <!-- 模块导航将通过JavaScript动态生成 -->
+        </nav>
+      </div>
+      
+      <div class="module-container">
+        <div id="current-module">
+          <div class="welcome-message">
+            <h2>欢迎开始学习！</h2>
+            <p>点击左侧导航开始学习第一个模块。</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="learning-sidebar">
+        <div class="concepts-panel">
+          <h3>学习概念</h3>
+          <ul id="concepts-list">
+            <!-- 概念列表将通过JavaScript动态生成 -->
+          </ul>
+        </div>
+        
+        <div class="progress-panel">
+          <h3>学习进度</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+          <p id="progress-text">0/{{learningData.metadata.totalModules}} 完成</p>
+        </div>
+      </div>
+    </main>
+    
+    <footer class="learning-footer">
+      <p>由渐进式互动学习生成器创建 • {{timestamp}}</p>
+    </footer>
+  </div>
+  
+  <script src="assets/interactive.js"></script>
+  <script>
+    // 初始化学习数据
+    window.learningData = {{{stringify learningData}}};
+    window.currentModuleIndex = 0;
+    
+    // 启动学习应用
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.LearningApp) {
+        window.LearningApp.init();
+      }
+    });
+  </script>
+</body>
+</html>

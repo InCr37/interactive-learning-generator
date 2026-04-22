@@ -1,0 +1,350 @@
+{
+  "version": "2.0.0",
+  "language": "en-US",
+  "title": "Arduino Programming Part I: Control Structures (Spiral Curriculum)",
+  "description": "Learn Arduino control structures with progressive integration - each problem builds on previous concepts",
+  "scenario": "You are programming an Arduino robot. Let's learn control structures step by step, then combine them increasingly.",
+  "isBeginnerFriendly": true,
+  "designPrinciples": [
+    "proactive-teaching",
+    "progressive-code-building",
+    "understanding-confirmation",
+    "chunked-delivery",
+    "spiral-curriculum"
+  ],
+  "learningObjectives": [
+    "Master if statements",
+    "Master comparison operators",
+    "Master if...else statements",
+    "Master for loops",
+    "Master while loops",
+    "Integrate all concepts together"
+  ],
+  "teachingModules": [
+    {
+      "id": "teach_if",
+      "type": "teaching",
+      "concept": "if statement",
+      "title": "Lesson 1: The if Statement",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "code": "if ( ) { }",
+          "explanation": "if has three parts: the word 'if', a condition in parentheses, and actions in curly braces. It means: IF condition is true, THEN do the action."
+        },
+        {
+          "stepNumber": 2,
+          "code": "if (temperature > 30) { }",
+          "explanation": "Now we add a condition. 'temperature > 30' means 'temperature is greater than 30'. The '>' compares two values."
+        },
+        {
+          "stepNumber": 3,
+          "code": "if (temperature > 30) { fanOn(); }",
+          "explanation": "Inside the braces, we put the action: 'fanOn();'. This means: IF temperature > 30, THEN turn on the fan."
+        }
+      ],
+      "analogy": "if is like a traffic light: IF green, THEN go. IF condition is true, THEN do action.",
+      "everydayExample": "IF hungry, THEN eat. IF cold, THEN wear a jacket.",
+      "estimatedTimeMinutes": 4
+    },
+    {
+      "id": "teach_comparison",
+      "type": "teaching",
+      "concept": "comparison operators",
+      "title": "Lesson 2: Comparison Operators",
+      "content": {
+        "explanation": "Comparison operators compare two values and return TRUE or FALSE.\n\n> means GREATER THAN (5 > 3 is TRUE)\n< means LESS THAN (3 < 5 is TRUE)\n>= means GREATER OR EQUAL\n<= means LESS OR EQUAL\n== means EQUAL TO\n!= means NOT EQUAL"
+      },
+      "analogy": "Comparison operators are like a scale - they tell you which side is bigger.",
+      "estimatedTimeMinutes": 4
+    },
+    {
+      "id": "teach_if_else",
+      "type": "teaching",
+      "concept": "if...else statement",
+      "title": "Lesson 3: Two Choices with if...else",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "code": "if (condition) { // action A }",
+          "explanation": "First, the basic 'if'. If condition is TRUE, do action A."
+        },
+        {
+          "stepNumber": 2,
+          "code": "if (light < 50) { LED = ON; }\nelse { LED = OFF; }",
+          "explanation": "else means 'OTHERWISE'. If condition is FALSE, do the else action instead. IF dim, THEN LED ON. ELSE, LED OFF."
+        }
+      ],
+      "analogy": "if...else is like a fork: IF left, ELSE right. One path or the other.",
+      "estimatedTimeMinutes": 4
+    },
+    {
+      "id": "teach_for_loop",
+      "type": "teaching",
+      "concept": "for loop",
+      "title": "Lesson 4: The for Loop",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "code": "for ( ; ; ) { }",
+          "explanation": "for loop has three parts inside parentheses: start, condition, update. It repeats the action a set number of times."
+        },
+        {
+          "stepNumber": 2,
+          "code": "for (int i = 0; i < 5; i++) { }",
+          "explanation": "Start at i=0. Keep going while i < 5. Add 1 to i each time. So it repeats 5 times (i=0,1,2,3,4)."
+        },
+        {
+          "stepNumber": 3,
+          "code": "for (int i = 0; i < 5; i++) { flashLED(); }",
+          "explanation": "This flashes the LED exactly 5 times. You know the exact count before starting."
+        }
+      ],
+      "analogy": "for loop is like counting: FOR 5 times, do a push-up. You know exactly how many.",
+      "estimatedTimeMinutes": 5
+    },
+    {
+      "id": "teach_while_loop",
+      "type": "teaching",
+      "concept": "while loop",
+      "title": "Lesson 5: The while Loop",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "code": "while ( ) { }",
+          "explanation": "while loop: WHILE condition is true, keep doing the action. You don't know how many times - it depends on when the condition becomes false."
+        },
+        {
+          "stepNumber": 2,
+          "code": "while (noObstacle) { moveForward(); }",
+          "explanation": "Keep moving forward WHILE no obstacle is detected. Stop when obstacle appears."
+        }
+      ],
+      "analogy": "while is like waiting: WHILE raining, wait inside. Keep waiting until it stops.",
+      "estimatedTimeMinutes": 4
+    }
+  ],
+  "understandingChecks": [
+    {
+      "id": "check_if",
+      "concept": "if statement",
+      "question": "Can you explain 'if' in your own words?",
+      "prompt": "Try explaining it to a friend who has never programmed."
+    },
+    {
+      "id": "check_comparison",
+      "concept": "comparison operators",
+      "question": "Is (7 > 5) TRUE or FALSE?",
+      "answer": "TRUE"
+    },
+    {
+      "id": "check_if_else",
+      "concept": "if...else",
+      "question": "If light = 75, what happens?\nif (light < 50) { LED = ON; }\nelse { LED = OFF; }",
+      "answer": "LED turns OFF (else branch runs)"
+    },
+    {
+      "id": "check_for",
+      "concept": "for loop",
+      "question": "for (i=0; i<3; i++) - how many times does it run?",
+      "answer": "3 times (i=0, i=1, i=2)"
+    },
+    {
+      "id": "check_while",
+      "concept": "while loop",
+      "question": "When should you use while instead of for?",
+      "answer": "When you don't know how many times to repeat"
+    }
+  ],
+  "spiralPractice": {
+    "description": "Cumulative practice: each problem combines previously learned concepts",
+    "practiceLevels": [
+      {
+        "level": 1,
+        "conceptCount": 1,
+        "description": "Practice each concept individually",
+        "problems": [
+          {
+            "id": "spiral_1_if",
+            "title": "Practice: if Statement",
+            "scenario": "Temperature is 35°C. Write code to turn on fan if temp > 30.",
+            "solution": "if (temperature > 30) { fanOn(); }",
+            "conceptsCovered": [
+              "if"
+            ],
+            "feedback": {
+              "correct": "Correct! You mastered if statements.",
+              "incorrect": "Remember: if (condition) - what condition means temp > 30?"
+            }
+          },
+          {
+            "id": "spiral_1_for",
+            "title": "Practice: for Loop",
+            "scenario": "Flash an LED exactly 4 times.",
+            "solution": "for (int i = 0; i < 4; i++) { flashLED(); }",
+            "conceptsCovered": [
+              "for loop"
+            ],
+            "feedback": {
+              "correct": "Correct! You mastered for loops.",
+              "incorrect": "Remember: for (start; condition; update) - how many times should it run?"
+            }
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "conceptCount": 2,
+        "description": "Combine 2 concepts: for loop + if statement",
+        "problems": [
+          {
+            "id": "spiral_2_for_if",
+            "title": "Practice: for Loop + if Statement",
+            "scenario": "Flash LED 3 times, but ONLY if the temperature is above 25°C.",
+            "hints": [
+              "First think: how do you check temperature?",
+              "Then think: how do you repeat something 3 times?",
+              "Put the for INSIDE the if, or the if INSIDE the for?"
+            ],
+            "solution": "if (temperature > 25) {\n  for (int i = 0; i < 3; i++) { flashLED(); }\n}",
+            "conceptsCovered": [
+              "for loop",
+              "if statement"
+            ],
+            "feedback": {
+              "correct": "Excellent! You're combining for and if together!",
+              "incorrect": "Think: Do you want to flash 3 times IF temp is high? Or check temp EACH time you flash?"
+            }
+          },
+          {
+            "id": "spiral_2_while_if",
+            "title": "Practice: while Loop + if Statement",
+            "scenario": "Keep moving forward UNTIL you detect an obstacle, then stop and check if it is close (< 20cm).",
+            "solution": "while (noObstacle) { moveForward(); }\nif (distance < 20) { stop(); }",
+            "conceptsCovered": [
+              "while loop",
+              "if statement"
+            ],
+            "feedback": {
+              "correct": "Great! You combined while and if!",
+              "incorrect": "Remember: while keeps going until condition is false. if checks a condition once."
+            }
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "conceptCount": 3,
+        "description": "Combine 3 concepts: for loop + if + comparison",
+        "problems": [
+          {
+            "id": "spiral_3_for_if_compare",
+            "title": "Practice: for + if + Comparison",
+            "scenario": "Check 5 sensors. For EACH sensor that reads ABOVE 50, turn on its LED.",
+            "hints": [
+              "Use for to loop through 5 sensors",
+              "Inside the loop, use if to check if sensor > 50",
+              "The comparison (>) checks if value is above threshold"
+            ],
+            "solution": "for (int i = 0; i < 5; i++) {\n  int val = readSensor(i);\n  if (val > 50) { turnOnLED(i); }\n}",
+            "conceptsCovered": [
+              "for loop",
+              "if statement",
+              "comparison operators"
+            ],
+            "feedback": {
+              "correct": "Outstanding! You're mastering 3 concepts together!",
+              "incorrect": "Break it down: 1) Loop 5 times, 2) Read each sensor, 3) If > 50, turn on LED"
+            }
+          }
+        ]
+      }
+    ],
+    "finalChallenge": {
+      "id": "final_challenge",
+      "title": "FINAL MISSION: Arduino Robot Controller",
+      "scenario": "Design a complete Arduino program that demonstrates ALL the concepts you've learned.",
+      "requirements": [
+        "Use a for loop to check all sensors on startup",
+        "Use if...else to respond to sensor readings differently",
+        "Use while loop for continuous monitoring",
+        "Use comparison operators to make decisions",
+        "Combine all concepts in one coherent program"
+      ],
+      "problem": "Create an Arduino program for an autonomous robot that:\n\n1. On STARTUP (setup): Check all 4 sensors using a for loop\n2. In the MAIN LOOP: \n   - Use while to keep the robot active\n   - Use if...else to make decisions based on sensors:\n     * If sensor reading > 80: Turn right\n     * If sensor reading < 30: Turn left\n     * Else: Go straight\n   - Use comparison operators in your conditions\n3. Use for loop inside to flash an LED 3 times when changing direction\n\nYour program should demonstrate ALL concepts working together!",
+      "solutionApproach": [
+        "1. First, set up the for loop to initialize sensors",
+        "2. Then, create the while loop for continuous operation",
+        "3. Inside while, add if...else for decision making",
+        "4. Use comparison operators (>, <) in if conditions",
+        "5. Add a for loop inside the direction change to flash LED"
+      ],
+      "evaluationCriteria": {
+        "usesAllConcepts": "Must use: for, while, if, if...else, comparison operators",
+        "logicalFlow": "Robot should behave logically",
+        "compiles": "Code must be syntactically correct"
+      },
+      "hints": [
+        "if = making decisions",
+        "for = repeating known times",
+        "while = repeating until condition changes",
+        "comparison = >, <, ==, etc. in conditions"
+      ],
+      "feedback": {
+        "perfect": "PERFECT! You've mastered all concepts and can integrate them!",
+        "partial": "Good progress! Review the concepts you missed and try again.",
+        "needsReview": "Keep practicing! Go back to teaching modules for concepts you struggled with."
+      },
+      "reward": {
+        "type": "certificate",
+        "message": "Congratulations! You have completed the Spiral Curriculum for Arduino Control Structures!"
+      }
+    }
+  },
+  "flowStructure": {
+    "phase1_teach": {
+      "description": "Learn each concept individually",
+      "modules": "5 teaching modules",
+      "duration": "21 minutes"
+    },
+    "phase2_understand": {
+      "description": "Confirm understanding of each concept",
+      "modules": "5 understanding checks",
+      "duration": "10 minutes"
+    },
+    "phase3_spiralPractice": {
+      "description": "Practice combining concepts progressively",
+      "levels": "3 levels (1 concept -> 2 concepts -> 3 concepts)",
+      "duration": "15 minutes"
+    },
+    "phase4_final": {
+      "description": "Comprehensive challenge using all concepts",
+      "duration": "10 minutes"
+    }
+  },
+  "totalDuration": {
+    "teachingMinutes": 21,
+    "understandingMinutes": 10,
+    "practiceMinutes": 15,
+    "finalMinutes": 10,
+    "totalMinutes": 56
+  },
+  "metadata": {
+    "sourceMaterial": "Arduino Programming Part I - Control Structures (Lec14, ELEC1100 HKUST)",
+    "generatedAt": "2026-04-19",
+    "version": "2.0.0 - Spiral Curriculum",
+    "topics": [
+      "Control Flow",
+      "Conditional Statements",
+      "Loop Structures",
+      "Comparison Operators"
+    ],
+    "difficultyLevels": [
+      "basic",
+      "application",
+      "synthesis"
+    ],
+    "isBeginnerFriendly": true,
+    "aiConversationReady": true
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "version": "1.2.0",
+  "language": "en-US",
+  "title": "Arduino Programming Part I: Control Structures",
+  "description": "Master Arduino control structures through hands-on scenarios and guided practice",
+  "scenario": "You are programming an Arduino-based robot that needs to navigate using sensors, respond to environmental conditions, and perform repetitive tasks.",
+  "learningObjectives": [
+    "Understand regular flow vs controlled flow of code execution",
+    "Master if, if...else if decision-making statements",
+    "Apply comparison and Boolean operators in conditional logic",
+    "Implement for and while loop structures for repetitive tasks",
+    "Use compound operators for efficient code"
+  ],
+  "interactiveModules": [
+    {
+      "id": "intro_control_flow",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Welcome! Today we'll explore Arduino control structures. Imagine you're programming a robot that needs to make decisions and repeat actions. Before we dive in, let's assess your starting point: What's the main difference between 'regular flow' and 'controlled flow' of code?",
+      "choices": [
+        {
+          "id": "flow_a",
+          "text": "Regular flow executes line by line; controlled flow makes decisions based on conditions",
+          "feedback": "Excellent! You've got the core concept. In Arduino, regular flow means your code runs sequentially from top to bottom. Controlled flow lets you branch based on sensor readings or other conditions.",
+          "next": "dialogue_comparison"
+        },
+        {
+          "id": "flow_b",
+          "text": "Controlled flow is faster than regular flow",
+          "feedback": "Not quite. Speed isn't the difference—it's about HOW the code executes. Regular flow runs line by line in order; controlled flow can skip sections or loop based on conditions.",
+          "next": "dialogue_comparison"
+        },
+        {
+          "id": "flow_c",
+          "text": "They are two names for the same thing",
+          "feedback": "Incorrect. These are distinct concepts. Regular flow is sequential execution; controlled flow introduces decision-making that can alter the execution path.",
+          "next": "dialogue_comparison"
+        }
+      ]
+    },
+    {
+      "id": "dialogue_comparison",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Your robot has a temperature sensor. When temperature exceeds 30°C, it should turn on a cooling fan. Which Arduino function would you use to check this condition?",
+      "choices": [
+        {
+          "id": "compare_1",
+          "text": "if (temperature > 30) { fanOn(); }",
+          "feedback": "Perfect! The if statement checks a condition and executes the code block only if the condition is true.",
+          "next": "quiz_if_syntax"
+        },
+        {
+          "id": "compare_2",
+          "text": "digitalWrite(fanPin, temperature);",
+          "feedback": "Close, but digitalWrite only sets HIGH or LOW. You need a conditional to decide WHEN to set it. Try wrapping it with an if statement.",
+          "next": "quiz_if_syntax"
+        },
+        {
+          "id": "compare_3",
+          "text": "while (temperature > 30);",
+          "feedback": "A while loop would repeat infinitely while the condition is true—it doesn't execute an action once. You need if for a one-time decision check.",
+          "next": "quiz_if_syntax"
+        }
+      ]
+    },
+    {
+      "id": "quiz_if_syntax",
+      "type": "multiple_choice",
+      "question": "What is the correct syntax for an if statement that checks if 'sensorValue' is greater than 100?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "if (sensorValue > 100) { // do something }",
+          "correct": true
+        },
+        {
+          "id": "opt2",
+          "text": "if sensorValue > 100 { // do something }",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "if (sensorValue > 100) then { // do something }",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "when (sensorValue > 100) { // do something }",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Correct! Arduino uses parentheses for conditions and curly braces for code blocks—no 'then' keyword needed.",
+        "incorrect": "Arduino's if syntax requires parentheses around the condition and curly braces for the code block. No 'then' keyword."
+      },
+      "difficulty": "basic",
+      "maxAttempts": 3,
+      "hints": [
+        "The condition must be enclosed in parentheses",
+        "The code block uses curly braces { }",
+        "Arduino doesn't use the 'then' keyword"
+      ]
+    },
+    {
+      "id": "dialogue_if_else",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Now your robot needs to react differently based on multiple conditions. The light sensor should: turn LEDs ON when brightness < 50, flash when brightness is 50-80, and turn LEDs OFF when brightness > 80. How would you handle this?",
+      "choices": [
+        {
+          "id": "multi_1",
+          "text": "Use if...else if chain to check each range",
+          "feedback": "Exactly! An if...else if chain lets you check multiple conditions in sequence.",
+          "next": "quiz_else_if"
+        },
+        {
+          "id": "multi_2",
+          "text": "Use three separate if statements",
+          "feedback": "That could work, but with three separate if statements, multiple actions might trigger simultaneously. Use if...else if to ensure only one branch executes.",
+          "next": "quiz_else_if"
+        },
+        {
+          "id": "multi_3",
+          "text": "Use a for loop to iterate through ranges",
+          "feedback": "A for loop is for repetition, not decision-making. You want if...else if to check different ranges of sensor values.",
+          "next": "quiz_else_if"
+        }
+      ]
+    },
+    {
+      "id": "quiz_else_if",
+      "type": "multiple_choice",
+      "question": "In the code:\nif (x < 0) { result = -1; }\nelse if (x == 0) { result = 0; }\nelse { result = 1; }\n\nIf x = 5, what is result?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "-1",
+          "correct": false
+        },
+        {
+          "id": "opt2",
+          "text": "0",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "1",
+          "correct": true
+        },
+        {
+          "id": "opt4",
+          "text": "undefined",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Correct! When x=5, it's neither < 0 nor == 0, so the else block executes, setting result = 1.",
+        "incorrect": "x=5 is not less than 0, nor equal to 0. Therefore the else block (the final catch-all) executes."
+      },
+      "difficulty": "basic",
+      "maxAttempts": 3
+    },
+    {
+      "id": "quiz_comparison",
+      "type": "multiple_choice",
+      "question": "What is the result of digitalWrite(13, HIGH) equivalent to?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "digitalWrite(13, 1) and digitalWrite(13, true)",
+          "correct": true
+        },
+        {
+          "id": "opt2",
+          "text": "digitalWrite(13, 100)",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "digitalWrite(13, LOW)",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "Only digitalWrite(13, 1)",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Correct! In Arduino, HIGH, 1, and true are interchangeable. Note that any non-zero value (like 200) is also treated as true.",
+        "incorrect": "Arduino treats HIGH, 1, and true as equivalent. Any non-zero integer (including 200) is also treated as true."
+      },
+      "difficulty": "basic",
+      "maxAttempts": 3
+    },
+    {
+      "id": "dialogue_operators",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Now let's explore Boolean operators. Your robot needs to navigate: it should move forward ONLY when left sensor AND right sensor detect the line. What Boolean operator combines these conditions?",
+      "choices": [
+        {
+          "id": "bool_1",
+          "text": "&& (AND)",
+          "feedback": "Correct! && requires both operands to be true. Perfect for requiring both sensors to detect the line.",
+          "next": "quiz_boolean"
+        },
+        {
+          "id": "bool_2",
+          "text": "|| (OR)",
+          "feedback": "OR (||) would trigger if EITHER sensor detects the line. But you want BOTH sensors to detect it before moving forward.",
+          "next": "quiz_boolean"
+        },
+        {
+          "id": "bool_3",
+          "text": "! (NOT)",
+          "feedback": "NOT (!) inverts a boolean value. You need to combine two conditions, not invert one.",
+          "next": "quiz_boolean"
+        }
+      ]
+    },
+    {
+      "id": "quiz_boolean",
+      "type": "multiple_choice",
+      "question": "What is the result of: if (!(3 > 5) && (2 != 3))\nEvaluate: !(3 > 5) = ? and (2 != 3) = ?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "true && true = true (condition executes)",
+          "correct": true
+        },
+        {
+          "id": "opt2",
+          "text": "true && false = false (condition does not execute)",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "false && true = false (condition does not execute)",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "false && false = false (condition does not execute)",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Right! !(3 > 5) is true (3 is not greater than 5), and (2 != 3) is true (2 is not equal to 3). Both are true, so && gives true.",
+        "incorrect": "!(3 > 5) evaluates to true because 3 is NOT greater than 5. (2 != 3) is true. With &&, both must be true, so the result is true."
+      },
+      "difficulty": "application",
+      "maxAttempts": 3
+    },
+    {
+      "id": "dialogue_loop_intro",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Now let's talk about loops. Your robot needs to flash an LED 5 times. You know exactly how many repetitions needed. Which loop is best?",
+      "choices": [
+        {
+          "id": "loop_1",
+          "text": "for loop - I know the exact count",
+          "feedback": "Correct! When you know the number of iterations, for loop is ideal.",
+          "next": "quiz_for"
+        },
+        {
+          "id": "loop_2",
+          "text": "while loop - it also repeats",
+          "feedback": "While loop works but is better when you DON'T know the exact iteration count. Since you know you need exactly 5 flashes, for loop is more appropriate.",
+          "next": "quiz_for"
+        }
+      ]
+    },
+    {
+      "id": "quiz_for",
+      "type": "multiple_choice",
+      "question": "for (int i = 0; i < 5; i++) { flashLED(); }\nHow many times does flashLED() execute?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "4 times (i = 0,1,2,3)",
+          "correct": false
+        },
+        {
+          "id": "opt2",
+          "text": "5 times (i = 0,1,2,3,4)",
+          "correct": true
+        },
+        {
+          "id": "opt3",
+          "text": "6 times (i = 0,1,2,3,4,5)",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "Infinite loop",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Correct! i starts at 0, runs while i < 5 (so i = 0,1,2,3,4), then stops when i becomes 5. That's 5 iterations.",
+        "incorrect": "The loop runs while i < 5. With i starting at 0 and incrementing, you get: i=0,1,2,3,4 (5 values). When i=5, the condition fails and the loop exits."
+      },
+      "difficulty": "basic",
+      "maxAttempts": 3
+    },
+    {
+      "id": "quiz_compound",
+      "type": "multiple_choice",
+      "question": "int x = 5;\nx++;\nx += 3;\nx--;\nWhat is the final value of x?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "8",
+          "correct": true
+        },
+        {
+          "id": "opt2",
+          "text": "9",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "7",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "10",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Let's trace: x starts at 5. x++ makes x = 6. x += 3 makes x = 9. x-- makes x = 8. The final value is 8.",
+        "incorrect": "Trace step by step: x=5, x++ → x=6, x+=3 → x=9, x-- → x=8."
+      },
+      "difficulty": "application",
+      "maxAttempts": 3
+    },
+    {
+      "id": "dialogue_while",
+      "type": "branching_dialogue",
+      "role": "learning_assistant",
+      "content": "Your robot should keep moving forward WHILE no obstacle is detected. You don't know how long this will take—it's based on sensor input. Which loop do you need?",
+      "choices": [
+        {
+          "id": "while_1",
+          "text": "while loop - unknown iterations based on condition",
+          "feedback": "Correct! while loop repeats until the condition becomes false. Perfect when you don't know the iteration count in advance.",
+          "next": "quiz_while"
+        },
+        {
+          "id": "while_2",
+          "text": "for loop - all loops use for",
+          "feedback": "for loops are best when you know the exact iteration count. Here, you don't know when an obstacle will appear, so while is more appropriate.",
+          "next": "quiz_while"
+        }
+      ]
+    },
+    {
+      "id": "quiz_while",
+      "type": "multiple_choice",
+      "question": "int count = 0;\nwhile (count < 3) {\n  Serial.println(count);\n  count++;\n}\nWhat is printed?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "0, 1, 2",
+          "correct": true
+        },
+        {
+          "id": "opt2",
+          "text": "1, 2, 3",
+          "correct": false
+        },
+        {
+          "id": "opt3",
+          "text": "0, 1, 2, 3",
+          "correct": false
+        },
+        {
+          "id": "opt4",
+          "text": "count",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Correct! count starts at 0. While 0 < 3: print 0, increment to 1. While 1 < 3: print 1, increment to 2. While 2 < 3: print 2, increment to 3. While 3 < 3: false, exit. Output: 0, 1, 2.",
+        "incorrect": "count starts at 0. The while loop prints count BEFORE incrementing. So: count=0 (print 0), count=1 (print 1), count=2 (print 2), count=3 (exit). Result: 0, 1, 2."
+      },
+      "difficulty": "application",
+      "maxAttempts": 3
+    },
+    {
+      "id": "practical_scenario",
+      "type": "interactive_exercise",
+      "role": "learning_assistant",
+      "content": "Challenge Time! Write the Arduino code for a Half Adder. Given inputs A and B (pins 2 and 3), output Sum to pin 10 and Carry to pin 12.\n\nTruth table:\nA B | Sum Carry\n0 0 | 0   0\n0 1 | 1   0\n1 0 | 1   0\n1 1 | 0   1\n\nUsing digitalRead() and digitalWrite(), which logic correctly implements this?",
+      "exerciseType": "code_selection",
+      "starterCode": "// Half Adder Logic\nint A = digitalRead(2);\nint B = digitalRead(3);\n// Select the correct Sum and Carry logic:",
+      "choices": [
+        {
+          "id": "ha_wrong1",
+          "text": "Sum = A OR B, Carry = A AND B",
+          "feedback": "Not quite. OR gives 1 when either input is 1. But when A=1, B=1, Sum should be 0 (not 1). You need XOR: 1 XOR 1 = 0.",
+          "next": "practical_scenario"
+        },
+        {
+          "id": "ha_correct",
+          "text": "Sum = A XOR B, Carry = A AND B",
+          "feedback": "Excellent! This matches the half adder truth table perfectly. XOR gives 1 when inputs differ, AND gives 1 only when both are 1.",
+          "next": "summary_module"
+        },
+        {
+          "id": "ha_wrong2",
+          "text": "Sum = A + B, Carry = A AND B",
+          "feedback": "Close! But in binary logic: 1+1 = 1 with carry... Wait, Sum should be 0 when both are 1 (there's a carry). Sum = A XOR B gives 0 XOR 1 = 0 for A=1, B=1.",
+          "next": "practical_scenario"
+        }
+      ],
+      "difficulty": "synthesis",
+      "maxAttempts": 2
+    },
+    {
+      "id": "summary_module",
+      "type": "summary",
+      "role": "learning_assistant",
+      "content": "Congratulations on completing the Arduino Control Structures module!\n\nKey Takeaways:\n\n1. CONTROL FLOW: Regular flow executes sequentially; controlled flow makes decisions based on conditions.\n\n2. DECISION STATEMENTS:\n   - if (condition) { } - executes if condition is true\n   - if...else if...else - handles multiple conditions\n\n3. BOOLEAN OPERATORS:\n   - && (AND): both must be true\n   - || (OR): either must be true\n   - ! (NOT): inverts the value\n\n4. LOOPS:\n   - for loop: use when you know iteration count\n   - while loop: use when iteration count is unknown\n\n5. COMPOUND OPERATORS: ++, --, +=, -= provide shorthand\n\nNext Lecture: Creating user-defined functions in Arduino!",
+      "nextSteps": [
+        "Practice with the Arduino simulator",
+        "Review Arduino Language Reference at arduino.cc",
+        "Complete the lab exercises for this week"
+      ]
+    }
+  ],
+  "progressiveDisclosure": {
+    "unlockSequence": [
+      "intro_control_flow",
+      "dialogue_comparison",
+      "quiz_if_syntax",
+      "dialogue_if_else",
+      "quiz_else_if",
+      "quiz_comparison",
+      "dialogue_operators",
+      "quiz_boolean",
+      "dialogue_loop_intro",
+      "quiz_for",
+      "quiz_compound",
+      "dialogue_while",
+      "quiz_while",
+      "practical_scenario",
+      "summary_module"
+    ],
+    "prerequisites": {},
+    "estimatedTime": 25
+  },
+  "metadata": {
+    "sourceMaterial": "Arduino Programming Part I - Control Structures (Lec14, ELEC1100 HKUST)",
+    "generatedAt": "2026-04-18T14:00:00Z",
+    "topics": [
+      "Control Flow",
+      "Conditional Statements",
+      "Loop Structures",
+      "Boolean Logic",
+      "Compound Operators"
+    ],
+    "difficultyLevels": [
+      "basic",
+      "application",
+      "synthesis"
+    ],
+    "aiConversationReady": true
+  }
+}

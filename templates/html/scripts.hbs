@@ -1,0 +1,547 @@
+// 渐进式互动学习生成器 - 交互脚本
+// 处理模块导航、内容渲染、进度跟踪等功能
+
+// KaTeX + MathJax 数学渲染 (KaTeX primary, MathJax fallback)
+(function() {
+  window.mathRendered = false;
+  window.renderMathWithFallback = function() {
+    if (window.mathRendered) return;
+    // Try KaTeX first
+    if (typeof renderMathInElement !== 'undefined') {
+      try {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left:'$$', right:'$$', display:true},
+            {left:'$', right:'$', display:false},
+            {left:'\\(', right:'\\)', display:false},
+            {left:'\\[', right:'\\]', display:true}
+          ],
+          throwOnError: false
+        });
+        window.mathRendered = true;
+        return;
+      } catch(e) { console.warn('KaTeX render failed:', e); }
+    }
+    // Fallback to MathJax
+    if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+      MathJax.typesetPromise([document.body]).then(function() { window.mathRendered = true; }).catch(function(e) { console.warn('MathJax fallback failed:', e); });
+    }
+  };
+})();
+
+// Load KaTeX
+(function() {
+  var script = document.createElement('script');
+  script.defer = true;
+  script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
+  script.onload = function() {
+    // Load auto-render extension
+    var arScript = document.createElement('script');
+    arScript.defer = true;
+    arScript.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js';
+    arScript.onload = function() { window.renderMathWithFallback(); };
+    document.head.appendChild(arScript);
+  };
+  document.head.appendChild(script);
+})();
+
+// Load MathJax as fallback (loaded async, won't block)
+(function() {
+  var script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+  script.async = true;
+  document.head.appendChild(script);
+})();
+
+class LearningApp {
+  constructor() {
+    this.currentModuleIndex = 0;
+    this.completedModules = new Set();
+    this.learningData = window.learningData || {};
+    this.narrativeFramework = this.learningData.narrative || {};
+  }
+  
+  init() {
+    console.log('初始化学习应用');
+
+    // 初始化UI组件
+    this.initModuleNavigation();
+    this.initConceptsList();
+    this.initProgressTracker();
+
+    // 渲染数学公式 (延迟确保DOM已加载)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(window.renderMathWithFallback, 100);
+      });
+    } else {
+      setTimeout(window.renderMathWithFallback, 100);
+    }
+
+    // 加载第一个模块
+    this.loadModule(0);
+
+    // 设置事件监听器
+    this.setupEventListeners();
+  }
+  
+  initModuleNavigation() {
+    const navContainer = document.getElementById('module-nav');
+    if (!navContainer) return;
+    
+    const modules = this.learningData.modules || [];
+    const navList = document.createElement('ul');
+    
+    modules.forEach((module, index) => {
+      const navItem = document.createElement('li');
+      navItem.className = 'module-nav-item';
+      if (index === 0) navItem.classList.add('active');
+      if (this.completedModules.has(module.id)) navItem.classList.add('completed');
+      
+      navItem.textContent = `${index + 1}. ${module.title}`;
+      navItem.dataset.moduleIndex = index;
+      
+      navItem.addEventListener('click', () => {
+        this.loadModule(index);
+        this.updateActiveNavItem(index);
+      });
+      
+      navList.appendChild(navItem);
+    });
+    
+    navContainer.appendChild(navList);
+  }
+  
+  initConceptsList() {
+    const conceptsList = document.getElementById('concepts-list');
+    if (!conceptsList || !this.learningData.concepts) return;
+    
+    this.learningData.concepts.forEach(concept => {
+      const conceptItem = document.createElement('li');
+      conceptItem.className = 'concept-item';
+      conceptItem.textContent = concept.term;
+      conceptItem.title = concept.definition || concept.term;
+      conceptsList.appendChild(conceptItem);
+    });
+  }
+  
+  initProgressTracker() {
+    this.updateProgressDisplay();
+  }
+  
+  setupEventListeners() {
+    // 添加键盘导航支持
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        this.nextModule();
+      } else if (e.key === 'ArrowLeft') {
+        this.previousModule();
+      }
+    });
+  }
+  
+  loadModule(moduleIndex) {
+    const modules = this.learningData.modules || [];
+    if (moduleIndex < 0 || moduleIndex >= modules.length) return;
+    
+    this.currentModuleIndex = moduleIndex;
+    const module = modules[moduleIndex];
+    
+    // 更新当前模块显示
+    const moduleContainer = document.getElementById('current-module');
+    if (!moduleContainer) return;
+    
+    // 根据模块类型渲染内容
+    let moduleContent = '';
+    
+    switch (module.type) {
+      case 'dialogue':
+        moduleContent = this.renderDialogueModule(module);
+        break;
+      case 'quiz':
+        moduleContent = this.renderQuizModule(module);
+        break;
+      case 'exercise':
+        moduleContent = this.renderExerciseModule(module);
+        break;
+      default:
+        moduleContent = `<div class="module-content"><h2>${module.title}</h2><p>${module.content || ''}</p></div>`;
+    }
+    
+    moduleContainer.innerHTML = moduleContent;
+    
+    // 标记为已查看（如果未完成）
+    if (!this.completedModules.has(module.id)) {
+      this.completedModules.add(module.id);
+      this.updateProgressDisplay();
+      this.updateModuleNavigation();
+    }
+
+    // 滚动到顶部
+    window.scrollTo(0, 0);
+
+    // 设置测验事件监听器
+    this.setupQuizEventListeners();
+  }
+
+  /**
+   * 设置测验相关事件监听器
+   */
+  setupQuizEventListeners() {
+    const moduleContainer = document.getElementById('current-module');
+    if (!moduleContainer) return;
+
+    // 查找测验部分
+    const quizSection = moduleContainer.querySelector('.quiz-section');
+    if (!quizSection) return;
+
+    // 提交答案按钮
+    const submitBtn = quizSection.querySelector('.submit-quiz');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => this.handleQuizSubmit(quizSection));
+    }
+
+    // 请求提示按钮 - 默认隐藏，只在答错后显示
+    const hintBtn = quizSection.querySelector('.request-hint-btn');
+    if (hintBtn) {
+      hintBtn.style.display = 'none';
+      hintBtn.addEventListener('click', () => this.requestHint(quizSection));
+    }
+  }
+
+  /**
+   * 处理测验提交
+   */
+  handleQuizSubmit(quizSection) {
+    const form = quizSection.querySelector('.quiz-form');
+    const feedback = quizSection.querySelector('.quiz-feedback');
+    const hintBtn = quizSection.querySelector('.request-hint-btn');
+
+    if (!form || !feedback) return;
+
+    // 获取选中的选项
+    const selectedInputs = form.querySelectorAll('input:checked');
+    if (selectedInputs.length === 0) {
+      alert('请选择一个选项');
+      return;
+    }
+
+    // 显示反馈
+    feedback.style.display = 'block';
+    feedback.style.padding = '15px';
+    feedback.style.marginTop = '15px';
+    feedback.style.borderRadius = '4px';
+
+    // 获取正确答案（从选项的data属性或quizData）
+    const moduleContainer = quizSection.closest('[data-hints]');
+    const correctAnswers = moduleContainer?.dataset?.correctAnswers?.split(',') || [];
+    const selectedValues = Array.from(selectedInputs).map(i => i.value);
+
+    const isCorrect = selectedValues.length === correctAnswers.length &&
+                      selectedValues.every(v => correctAnswers.includes(v));
+
+    if (isCorrect) {
+      feedback.className = 'quiz-feedback correct';
+      feedback.innerHTML = '<p>正确！</p>';
+      // 答对了禁用提示按钮
+      if (hintBtn) {
+        hintBtn.style.display = 'none';
+      }
+    } else {
+      feedback.className = 'quiz-feedback incorrect';
+      feedback.innerHTML = '<p>不正确，请再试一次或请求提示。</p>';
+      // 答错了显示提示按钮
+      if (hintBtn) {
+        hintBtn.style.display = 'inline-block';
+      }
+    }
+  }
+
+  /**
+   * 请求提示（按需显示）
+   */
+  requestHint(quizSection) {
+    const moduleContainer = quizSection.closest('[data-hints]');
+    if (!moduleContainer) return;
+
+    const hintsContainer = quizSection.querySelector('.quiz-hints');
+    const hintBtn = quizSection.querySelector('.request-hint-btn');
+    if (!hintsContainer || !hintBtn) return;
+
+    // 获取当前提示级别
+    let hintLevel = parseInt(moduleContainer.dataset.hintLevel || '0', 10);
+
+    // 获取提示数据
+    let hints = [];
+    try {
+      hints = JSON.parse(moduleContainer.dataset.hints || '[]');
+    } catch (e) {
+      console.warn('提示数据解析失败:', e);
+      return;
+    }
+
+    // 如果还有未显示的提示
+    if (hintLevel < hints.length) {
+      const nextHint = hints[hintLevel];
+      hintLevel++;
+
+      // 更新提示级别
+      moduleContainer.dataset.hintLevel = hintLevel.toString();
+
+      // 显示新提示
+      hintsContainer.style.display = 'block';
+      const hintItem = document.createElement('div');
+      hintItem.className = 'hint-item';
+      hintItem.textContent = nextHint.content || nextHint;
+      hintsContainer.appendChild(hintItem);
+
+      // 更新按钮文字
+      const remaining = hints.length - hintLevel;
+      if (remaining > 0) {
+        hintBtn.textContent = `请求提示 (${hintLevel + 1}/${hints.length})`;
+      } else {
+        hintBtn.textContent = '已无更多提示';
+        hintBtn.disabled = true;
+      }
+    } else {
+      // 没有更多提示
+      hintBtn.textContent = '已无更多提示';
+      hintBtn.disabled = true;
+    }
+  }
+  
+  renderDialogueModule(module) {
+    const dialogueData = module.dialogueData || {};
+    let html = `
+      <div class="module-content">
+        <h2>${module.title}</h2>
+        <div class="dialogue-section">
+    `;
+    
+    // 介绍部分
+    if (dialogueData.introduction) {
+      html += `
+        <div class="dialogue-bubble guide-bubble">
+          ${dialogueData.introduction.guide || ''}
+        </div>
+        <div class="dialogue-prompt">
+          ${dialogueData.introduction.prompt || ''}
+        </div>
+      `;
+    }
+    
+    // 探索部分
+    if (dialogueData.exploration) {
+      html += `
+        <div class="dialogue-exploration">
+          ${dialogueData.exploration}
+        </div>
+      `;
+    }
+    
+    // 分支选项
+    if (dialogueData.branches && dialogueData.branches.length > 0) {
+      html += '<div class="branch-options">';
+      
+      dialogueData.branches.forEach(branch => {
+        html += `
+          <div class="branch-section">
+            <h4>${branch.prompt}</h4>
+        `;
+        
+        if (branch.options && branch.options.length > 0) {
+          branch.options.forEach(option => {
+            html += `
+              <button class="branch-option" data-feedback="${option.feedback || ''}">
+                ${option.text}
+              </button>
+            `;
+          });
+        }
+        
+        html += '</div>';
+      });
+      
+      html += '</div>';
+    }
+    
+    html += `
+        </div>
+      </div>
+    `;
+    
+    return html;
+  }
+  
+  renderQuizModule(module) {
+    const quizData = module.quizData || {};
+    const hints = quizData.progressiveHints || [];
+    const hintsJson = JSON.stringify(hints).replace(/'/g, "&#39;");
+    const correctAnswers = (quizData.correctAnswers || []).join(',');
+
+    let html = `
+      <div class="module-content" data-hints='${hintsJson}' data-hint-level="0" data-correct-answers="${correctAnswers}">
+        <h2>${module.title}</h2>
+        <div class="quiz-section">
+          <p class="quiz-stem">${quizData.questionStem || ''}</p>
+          <form class="quiz-form">
+    `;
+
+    // 选项
+    if (quizData.options && quizData.options.length > 0) {
+      const inputType = quizData.questionType === 'multiple-choice' ? 'checkbox' : 'radio';
+      const name = quizData.questionType === 'multiple-choice' ? 'quiz-options' : 'quiz-option';
+
+      quizData.options.forEach((option, index) => {
+        html += `
+          <div class="quiz-option">
+            <input type="${inputType}" id="option-${index}" name="${name}" value="${option.id}">
+            <label for="option-${index}">${option.text}</label>
+          </div>
+        `;
+      });
+    }
+
+    html += `
+            <button type="button" class="submit-quiz">提交答案</button>
+          </form>
+          <div class="quiz-feedback" style="display: none;">
+            <p>${quizData.feedback || ''}</p>
+          </div>
+          <div class="quiz-hints" style="display: none;">
+            <!-- 提示将按需显示 -->
+          </div>
+          <button type="button" class="request-hint-btn" style="display: none;">
+            请求提示 (1/${hints.length})
+          </button>
+        </div>
+      </div>
+    `;
+
+    return html;
+  }
+  
+  renderExerciseModule(module) {
+    const exerciseData = module.exerciseData || {};
+    let html = `
+      <div class="module-content">
+        <h2>${module.title}</h2>
+        <div class="exercise-section">
+    `;
+    
+    // 场景
+    if (exerciseData.scenario) {
+      html += `
+        <div class="exercise-scenario">
+          <h3>场景</h3>
+          <p>${exerciseData.scenario}</p>
+        </div>
+      `;
+    }
+    
+    // 任务
+    if (exerciseData.task) {
+      html += `
+        <div class="exercise-task">
+          <h3>任务</h3>
+          <p>${exerciseData.task}</p>
+        </div>
+      `;
+    }
+    
+    // 步骤
+    if (exerciseData.steps && exerciseData.steps.length > 0) {
+      html += '<div class="exercise-steps"><h3>步骤指导</h3><ol>';
+      
+      exerciseData.steps.forEach(step => {
+        html += `
+          <li>
+            <strong>${step.description}</strong>
+            <p>${step.guidance}</p>
+          </li>
+        `;
+      });
+      
+      html += '</ol></div>';
+    }
+    
+    // 提示
+    if (exerciseData.hints && exerciseData.hints.length > 0) {
+      html += '<div class="exercise-hints"><h3>提示</h3><ul>';
+      
+      exerciseData.hints.forEach(hint => {
+        html += `<li>${hint.text}</li>`;
+      });
+      
+      html += '</ul></div>';
+    }
+    
+    html += `
+          <button class="complete-exercise">完成练习</button>
+          <div class="exercise-feedback" style="display: none;">
+            <p>${exerciseData.feedback?.success || '完成得很好！'}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    return html;
+  }
+  
+  nextModule() {
+    const modules = this.learningData.modules || [];
+    if (this.currentModuleIndex < modules.length - 1) {
+      this.loadModule(this.currentModuleIndex + 1);
+      this.updateActiveNavItem(this.currentModuleIndex + 1);
+    }
+  }
+  
+  previousModule() {
+    if (this.currentModuleIndex > 0) {
+      this.loadModule(this.currentModuleIndex - 1);
+      this.updateActiveNavItem(this.currentModuleIndex - 1);
+    }
+  }
+  
+  updateActiveNavItem(moduleIndex) {
+    const navItems = document.querySelectorAll('.module-nav-item');
+    navItems.forEach((item, index) => {
+      if (index === moduleIndex) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+  
+  updateModuleNavigation() {
+    const navItems = document.querySelectorAll('.module-nav-item');
+    navItems.forEach((item, index) => {
+      const moduleId = this.learningData.modules?.[index]?.id;
+      if (moduleId && this.completedModules.has(moduleId)) {
+        item.classList.add('completed');
+      }
+    });
+  }
+  
+  updateProgressDisplay() {
+    const totalModules = this.learningData.modules?.length || 0;
+    const completedCount = this.completedModules.size;
+    const progressPercent = totalModules > 0 ? (completedCount / totalModules) * 100 : 0;
+    
+    // 更新进度条
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) {
+      progressFill.style.width = `${progressPercent}%`;
+    }
+    
+    // 更新进度文本
+    const progressText = document.getElementById('progress-text');
+    if (progressText) {
+      progressText.textContent = `${completedCount}/${totalModules} 完成`;
+    }
+  }
+}
+
+// 导出到全局
+window.LearningApp = LearningApp;

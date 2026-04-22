@@ -1,0 +1,338 @@
+{
+  "version": "1.3.0",
+  "language": "en-US",
+  "title": "Arduino Programming Part I: Control Structures (Beginner-Friendly)",
+  "description": "Learn Arduino control structures through step-by-step teaching with understanding checks",
+  "scenario": "You are programming an Arduino robot. Let's learn control structures step by step.",
+  "isBeginnerFriendly": true,
+  "designPrinciples": [
+    "proactive-teaching",
+    "progressive-code-building",
+    "understanding-confirmation",
+    "chunked-delivery",
+    "visual-code-highlighting"
+  ],
+  "learningObjectives": [
+    "Understand what 'if' statements do and when to use them",
+    "Learn comparison operators (> < == !=)",
+    "Apply if statements to make decisions in code",
+    "Use if...else for two-choice decisions"
+  ],
+  "teachingModules": [
+    {
+      "id": "teach_1_if_statement",
+      "type": "teaching",
+      "subtype": "progressive-code",
+      "concept": "if statement",
+      "title": "Lesson 1: The 'if' Statement",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "codeFragment": "if ( ) { }",
+          "explanation": "The 'if' statement has three parts: the word 'if', a condition in parentheses ( ), and actions in curly braces { }. It means: IF the condition is true, THEN do the actions.",
+          "highlightedElements": {
+            "keywords": [
+              "if"
+            ],
+            "operators": [],
+            "punctuation": [
+              "(",
+              ")",
+              "{",
+              "}"
+            ]
+          },
+          "isComplete": false
+        },
+        {
+          "stepNumber": 2,
+          "codeFragment": "if (temperature > 30) { }",
+          "explanation": "Now we add a condition. 'temperature > 30' means 'temperature is greater than 30'. The '>' is called a comparison operator - it compares two values.",
+          "highlightedElements": {
+            "keywords": [
+              "if"
+            ],
+            "variables": [
+              "temperature"
+            ],
+            "operators": [
+              ">"
+            ]
+          },
+          "isComplete": false
+        },
+        {
+          "stepNumber": 3,
+          "codeFragment": "if (temperature > 30) {\n  fanOn();\n}",
+          "explanation": "Inside the curly braces { }, we put the action: 'fanOn();'. This code means: IF temperature is greater than 30, THEN turn on the fan.",
+          "highlightedElements": {
+            "keywords": [
+              "if"
+            ],
+            "variables": [
+              "temperature"
+            ],
+            "operators": [
+              ">"
+            ],
+            "functions": [
+              "fanOn"
+            ]
+          },
+          "isComplete": true
+        }
+      ],
+      "estimatedTimeMinutes": 5,
+      "analogy": "Think of 'if' like a traffic light: IF the light is green, THEN you can go. IF the condition is true, THEN do the action.",
+      "everydayExample": "IF hungry, THEN eat. IF cold, THEN wear a jacket.",
+      "designPrinciples": [
+        "progressive-code-building",
+        "visual-code-highlighting",
+        "chunked-delivery"
+      ]
+    },
+    {
+      "id": "understand_1_if",
+      "type": "understanding-check",
+      "concept": "if statement",
+      "title": "Check Your Understanding: if Statement",
+      "questions": [
+        {
+          "id": "explain",
+          "question": "Can you explain in your own words what 'if' does?",
+          "type": "open-ended",
+          "prompt": "Try to explain it as if teaching a friend who has never programmed before."
+        },
+        {
+          "id": "example",
+          "question": "Can you give a real-life example of an 'if' situation?",
+          "type": "example-generation",
+          "prompt": "Think of a situation where you make a decision based on a condition."
+        }
+      ],
+      "quickCheck": {
+        "question": "What does 'if (x > 5)' mean?",
+        "options": [
+          "If x is greater than 5, then do something",
+          "Always do something",
+          "Never do something",
+          "If x equals 5"
+        ]
+      },
+      "estimatedTimeMinutes": 2,
+      "designPrinciples": [
+        "understanding-confirmation"
+      ]
+    },
+    {
+      "id": "teach_2_comparison",
+      "type": "teaching",
+      "subtype": "conceptual",
+      "concept": "comparison operators",
+      "title": "Lesson 2: Comparison Operators",
+      "content": {
+        "explanation": "Comparison operators compare two values and give a TRUE or FALSE answer.\n\nThe main comparison operators are:\n- '>' means GREATER THAN (5 > 3 is TRUE)\n- '<' means LESS THAN (3 < 5 is TRUE)\n- '>=' means GREATER THAN OR EQUAL (5 >= 5 is TRUE)\n- '<=' means LESS THAN OR EQUAL (3 <= 5 is TRUE)\n- '==' means EQUAL TO (5 == 5 is TRUE)\n- '!=' means NOT EQUAL (3 != 5 is TRUE)",
+        "keyPoints": [
+          "Comparison operators always return TRUE or FALSE",
+          "Use '==' to check equality (not '=' which assigns a value)",
+          "'>' and '<' are for strict comparisons"
+        ]
+      },
+      "estimatedTimeMinutes": 4,
+      "analogy": "Comparison operators are like a scale: they tell you which side is bigger or if they're equal.",
+      "everydayExample": "Your grade > 60 means you passed. Your age >= 18 means you're an adult.",
+      "designPrinciples": [
+        "proactive-teaching",
+        "chunked-delivery"
+      ]
+    },
+    {
+      "id": "understand_2_comparison",
+      "type": "understanding-check",
+      "concept": "comparison operators",
+      "title": "Check Your Understanding: Comparison Operators",
+      "questions": [
+        {
+          "id": "predict_1",
+          "question": "Is (7 > 5) TRUE or FALSE?",
+          "type": "prediction",
+          "answer": "TRUE"
+        },
+        {
+          "id": "predict_2",
+          "question": "Is (3 == 3) TRUE or FALSE?",
+          "type": "prediction",
+          "answer": "TRUE"
+        },
+        {
+          "id": "explain",
+          "question": "What's the difference between '=' and '==' in programming?",
+          "type": "open-ended",
+          "prompt": "One assigns values, one compares values."
+        }
+      ],
+      "estimatedTimeMinutes": 2,
+      "designPrinciples": [
+        "understanding-confirmation"
+      ]
+    },
+    {
+      "id": "teach_3_if_else",
+      "type": "teaching",
+      "subtype": "progressive-code",
+      "concept": "if...else statement",
+      "title": "Lesson 3: Two Choices with if...else",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "codeFragment": "if (condition) {\n  // action A\n}",
+          "explanation": "First, we have the basic 'if'. If the condition is TRUE, we do action A.",
+          "highlightedElements": {
+            "keywords": [
+              "if"
+            ]
+          },
+          "isComplete": false
+        },
+        {
+          "stepNumber": 2,
+          "codeFragment": "if (lightLevel < 50) {\n  // turn LED ON\n}\nelse {\n  // turn LED OFF\n}",
+          "explanation": "The 'else' means 'OTHERWISE'. If the condition is FALSE, we do the else action instead. So: IF light is dim, turn LED ON. ELSE (light is bright), turn LED OFF.",
+          "highlightedElements": {
+            "keywords": [
+              "if",
+              "else"
+            ],
+            "variables": [
+              "lightLevel"
+            ],
+            "operators": [
+              "<"
+            ]
+          },
+          "isComplete": true
+        }
+      ],
+      "estimatedTimeMinutes": 4,
+      "analogy": "if...else is like a fork in the road: IF you go left, ELSE you go right. One path or the other.",
+      "everydayExample": "IF it's raining, take an umbrella. ELSE (it's not raining), wear sunglasses.",
+      "designPrinciples": [
+        "progressive-code-building",
+        "visual-code-highlighting",
+        "chunked-delivery"
+      ]
+    },
+    {
+      "id": "understand_3_if_else",
+      "type": "understanding-check",
+      "concept": "if...else statement",
+      "title": "Check Your Understanding: if...else",
+      "questions": [
+        {
+          "id": "scenario",
+          "question": "Light level is 75. The code says:\nif (lightLevel < 50) { LED = ON; }\nelse { LED = OFF; }\nWhat happens to the LED?",
+          "type": "scenario-analysis",
+          "prompt": "Is 75 less than 50? True or False?"
+        }
+      ],
+      "estimatedTimeMinutes": 2,
+      "designPrinciples": [
+        "understanding-confirmation"
+      ]
+    }
+  ],
+  "practiceModules": [
+    {
+      "id": "practice_1",
+      "type": "practice",
+      "subtype": "code-application",
+      "concept": "if statement",
+      "title": "Practice: Write an if Statement",
+      "exercise": {
+        "instruction": "Write the missing condition:",
+        "scenario": "A robot should stop when it detects an obstacle closer than 20 cm.",
+        "codeSnippet": "if (distance ___ 20) {\n  robotStop();\n}",
+        "question": "What operator makes the robot stop when distance is LESS THAN 20?",
+        "options": [
+          "<",
+          ">",
+          "==",
+          "!="
+        ],
+        "correctAnswer": 0
+      },
+      "hints": [
+        "The robot should stop when distance is less than 20",
+        "Less than uses the '<' operator",
+        "The condition checks if distance is a smaller number"
+      ],
+      "feedback": {
+        "correct": "Correct! If distance < 20 (obstacle is close), then the robot stops.",
+        "incorrect": "Remember: '<' means 'less than'. If the obstacle is close, distance is a small number."
+      },
+      "estimatedTimeMinutes": 3,
+      "designPrinciples": [
+        "problem-solving-opportunities",
+        "constructive-failure"
+      ]
+    },
+    {
+      "id": "practice_2",
+      "type": "practice",
+      "subtype": "prediction",
+      "concept": "if...else logic",
+      "title": "Practice: Predict the Output",
+      "exercise": {
+        "instruction": "Predict what will happen:",
+        "codeSnippet": "int temperature = 25;\n\nif (temperature > 30) {\n  fanOn();\n}\nelse {\n  fanOff();\n}",
+        "question": "Is temperature (25) greater than 30? Will the fan be ON or OFF?",
+        "options": [
+          "Fan will be OFF (else branch runs)",
+          "Fan will be ON (if branch runs)",
+          "Fan will do nothing",
+          "This causes an error"
+        ],
+        "correctAnswer": 0
+      },
+      "feedback": {
+        "correct": "Correct! 25 > 30 is FALSE, so the else branch runs: fanOff().",
+        "incorrect": "Think: 25 is NOT greater than 30, so the condition is FALSE. The else branch executes, turning the fan OFF."
+      },
+      "estimatedTimeMinutes": 2,
+      "designPrinciples": [
+        "problem-solving-opportunities",
+        "constructive-failure"
+      ]
+    }
+  ],
+  "progressiveDisclosure": {
+    "unlockSequence": [
+      "teach_1_if_statement",
+      "understand_1_if",
+      "teach_2_comparison",
+      "understand_2_comparison",
+      "teach_3_if_else",
+      "understand_3_if_else",
+      "practice_1",
+      "practice_2"
+    ],
+    "prerequisites": {},
+    "estimatedTimeMinutes": 25,
+    "chunkSize": "3-5 minutes per teaching module"
+  },
+  "metadata": {
+    "sourceMaterial": "Arduino Programming Part I - Control Structures (Lec14, ELEC1100 HKUST)",
+    "generatedAt": "2026-04-18",
+    "version": "1.3.0 - Beginner-Friendly",
+    "topics": [
+      "Control Flow",
+      "Conditional Statements",
+      "Comparison Operators"
+    ],
+    "difficultyLevels": [
+      "basic"
+    ],
+    "isBeginnerFriendly": true,
+    "aiConversationReady": true
+  }
+}

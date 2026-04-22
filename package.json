@@ -1,0 +1,35 @@
+{
+  "name": "interactive-learning-generator",
+  "version": "1.2.0",
+  "description": "Transform traditional learning materials (PDF/DOCX/PPTX/text/images) into interactive learning experiences using progressive disclosure, contextual narrative, and constructive failure feedback. Generates branching dialogues, multiple-choice questions, and interactive exercises with language-adaptive output (English/Chinese). Outputs structured JSON data for direct use in AI conversations, lightweight and cross-platform compatible.",
+  "main": "src/index.js",
+  "bin": {
+    "ilg": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node tests/test-processors.js && node tests/test-generators.js && node tests/test-outputs.js"
+  },
+  "keywords": [
+    "education",
+    "learning",
+    "interactive",
+    "game-based-learning",
+    "pedagogy",
+    "json",
+    "ai-conversation",
+    "lightweight",
+    "cross-platform"
+  ],
+  "author": "WorkBuddy Skill Developer",
+  "license": "MIT",
+  "dependencies": {
+    "natural": "^6.3.0",
+    "franc": "^6.2.0",
+    "fs-extra": "^11.2.0",
+    "mime-types": "^2.1.35",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
