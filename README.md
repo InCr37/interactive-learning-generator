@@ -4,7 +4,7 @@ A Claude Code skill that transforms traditional learning materials (PDF, DOCX, P
 
 ## Features
 
-- **Smart Content Analysis**: Automatically identifies key concepts, learning objectives, and难点
+- **Smart Content Analysis**: Automatically identifies key concepts, learning objectives, and difficulties
 - **Pedagogical Design**: Applies 12 teaching principles including progressive disclosure, contextual narrative, and adaptive difficulty
 - **Branching Dialogues**: Simulated learning assistant guidance through decision trees
 - **Multiple Choice Questions**: Contextualized knowledge application with instant feedback
