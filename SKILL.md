@@ -2,7 +2,6 @@
 name: interactive-learning-generator
 description: "Transform traditional learning materials (PDF/DOCX/PPTX/text/images) into interactive learning experiences using progressive disclosure, contextual narrative, and constructive failure feedback. Generates branching dialogues, multiple-choice questions, and interactive exercises with language-adaptive output (English/Chinese). Outputs structured JSON data for direct use in AI conversations, enabling lightweight deployment across different AI agent platforms."
 description_zh: "将传统学习材料（PDF/DOCX/PPTX/文本/图片）转化为高度互动的学习体验，应用渐进式揭露、情境化叙事、建设性失败反馈等教学设计原则，生成分支对话、选择题和互动练习。支持语言自适应（中英文），自动检测输入语言并生成匹配语言的互动内容。输出结构化JSON数据，可直接在AI对话中使用，轻量化适配不同AI agent平台。"
-description_en: "Transform traditional learning materials (PDF/DOCX/PPTX/text/images) into interactive learning experiences using progressive disclosure, contextual narrative, and constructive failure feedback. Generates branching dialogues, multiple-choice questions, and interactive exercises with language-adaptive output (English/Chinese). Outputs structured JSON data for direct use in AI conversations, enabling lightweight deployment across different AI agent platforms."
 version: "1.3.0"
 homepage: ""
 allowed-tools: Read,Write,Bash,Edit,Execute
