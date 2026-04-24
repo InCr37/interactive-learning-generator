@@ -31,7 +31,10 @@ class InteractiveDesigner {
       generateVisuals = true,
       neutralInterface = true,
       tempDir,
-      context
+      context,
+      learnerId,
+      learnerProfile,
+      optimizationDirectives
     } = options;
 
     // Check if content is for beginners or programming-related
@@ -57,7 +60,11 @@ class InteractiveDesigner {
         concepts,
         narrativeFramework,
         difficultyAssessment,
-        { neutral: neutralInterface }
+        {
+          neutral: neutralInterface,
+          optimizationDirectives,
+          learnerProfile
+        }
       );
 
       // Extract taught concepts and examples from teaching flows for quiz deduplication
@@ -87,7 +94,8 @@ class InteractiveDesigner {
       { neutral: neutralInterface }
     );
 
-    // 4. 生成选择题（传入教过的概念和例子用于去重）
+    // 4. 生成选择题（传入教过的概念、例子和用户性能数据用于自适应调整）
+    const userPerformance = learnerProfile?.aggregatedMetrics || null;
     const quizzes = await QuizGenerator.generate(
       concepts,
       learningObjectives,
@@ -95,7 +103,9 @@ class InteractiveDesigner {
       {
         applyPrinciples: applyPrinciples || [],
         taughtConcepts,
-        recentExamples
+        recentExamples,
+        userPerformance,
+        optimizationDirectives
       }
     );
 
@@ -106,15 +116,21 @@ class InteractiveDesigner {
       difficultyAssessment
     );
 
-    // 6. 对于初学者或综合练习，生成螺旋式练习
+    // 6. 对于初学者或综合练习，生成螺旋式练习（应用优化配置）
     let spiralPracticeFlow = null;
     if ((isBeginner || isProgramming) && teachingFlows.length > 0 && concepts.length >= 2) {
       console.log('启用螺旋式练习模式：渐进整合先前所学概念');
       const TeachingFlowGen = require('./TeachingFlowGenerator');
+      const spiralConfig = optimizationDirectives?.spiralPracticeConfig || { integrationPoint: 2 };
       spiralPracticeFlow = TeachingFlowGen.integrateSpiralPractice(
         teachingFlows,
         concepts,
-        { integrationPoint: 2, includeFinalChallenge: true }
+        {
+          integrationPoint: spiralConfig.integrationPoint || 2,
+          includeFinalChallenge: spiralConfig.finalChallengeDifficulty !== 'basic',
+          problemsPerLevel: spiralConfig.problemsPerLevel || 1,
+          includeRemedialPractice: spiralConfig.includeRemedialPractice || false
+        }
       );
     }
 

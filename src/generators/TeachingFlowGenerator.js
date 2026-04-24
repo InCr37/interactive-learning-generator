@@ -24,6 +24,10 @@ class TeachingFlowGenerator {
     const isBeginner = difficultyAssessment.overallDifficulty < 5;
     const isProgramming = this.isProgrammingRelated(concepts);
 
+    // Get optimization directives for adaptive teaching
+    const { optimizationDirectives, learnerProfile } = options || {};
+    const teachingStyle = optimizationDirectives?.teachingStyle || 'standard';
+
     const teachingModules = [];
 
     // For each concept, generate a teaching-first module
@@ -34,7 +38,8 @@ class TeachingFlowGenerator {
         narrativeFramework,
         difficultyAssessment,
         isProgramming,
-        i
+        i,
+        { optimizationDirectives, learnerProfile, teachingStyle }
       );
       teachingModules.push(module);
 
@@ -53,28 +58,45 @@ class TeachingFlowGenerator {
   /**
    * Create a teaching module for a single concept
    */
-  static async createTeachingModule(concept, narrativeFramework, difficultyAssessment, isProgramming, index) {
+  static async createTeachingModule(concept, narrativeFramework, difficultyAssessment, isProgramming, index, options = {}) {
     const isBeginner = difficultyAssessment.overallDifficulty < 5;
+    const { optimizationDirectives, learnerProfile, teachingStyle } = options || {};
 
     // For programming concepts, use progressive code building
     if (isProgramming && concept.codeExample) {
-      return this.createProgressiveCodeTeaching(concept, index);
+      return this.createProgressiveCodeTeaching(concept, index, { optimizationDirectives, teachingStyle });
     }
 
     // For non-programming or concepts without code, create conceptual teaching
-    return this.createConceptualTeaching(concept, narrativeFramework, index, isBeginner);
+    return this.createConceptualTeaching(concept, narrativeFramework, index, isBeginner, { optimizationDirectives, teachingStyle });
   }
 
   /**
    * Create progressive code teaching module
    * Builds code step-by-step, explaining each part
    */
-  static createProgressiveCodeTeaching(concept, index) {
+  static createProgressiveCodeTeaching(concept, index, options = {}) {
+    const { teachingStyle } = options || {};
     const codeExample = concept.codeExample;
     const lines = codeExample.split('\n').filter(line => line.trim());
 
     // Break code into progressive steps
     const steps = this.breakCodeIntoSteps(lines);
+
+    // Adjust based on teaching style
+    let estimatedTime = 3 + (steps.length * 0.5);
+    let includeAnalogies = true;
+    let examplesPerConcept = 2;
+
+    if (teachingStyle === 'remedial') {
+      estimatedTime *= 1.3; // More time for struggling learners
+      includeAnalogies = true;
+      examplesPerConcept = 3;
+    } else if (teachingStyle === 'advanced') {
+      estimatedTime *= 0.7; // Faster for advanced learners
+      includeAnalogies = false;
+      examplesPerConcept = 1;
+    }
 
     return {
       id: `teaching_${index}`,
@@ -82,6 +104,7 @@ class TeachingFlowGenerator {
       subtype: 'progressive-code',
       concept: concept.term,
       title: `Learning: ${concept.term}`,
+      teachingStyle: teachingStyle || 'standard',
 
       // Step-by-step content
       steps: steps.map((step, stepIndex) => ({
@@ -93,13 +116,18 @@ class TeachingFlowGenerator {
       })),
 
       // Teaching metadata
-      estimatedTime: 3 + (steps.length * 0.5), // 3 min base + 30 sec per step
-      isBeginnerFriendly: true,
+      estimatedTime,
+      isBeginnerFriendly: teachingStyle !== 'advanced',
       designPrinciples: [
         'progressive-code-building',
         'visual-code-highlighting',
         'chunked-delivery'
       ],
+      adaptiveMetadata: {
+        teachingStyle,
+        includeAnalogies,
+        examplesPerConcept
+      },
       // Natural transition hint for UI layer - no CLI-style prompts
       transitionHint: 'Ready for a practice problem?',
       noCliPrompts: true
@@ -250,33 +278,41 @@ class TeachingFlowGenerator {
   /**
    * Create conceptual teaching for non-code concepts
    */
-  static createConceptualTeaching(concept, narrativeFramework, index, isBeginner) {
+  static createConceptualTeaching(concept, narrativeFramework, index, isBeginner, options = {}) {
+    const { teachingStyle } = options || {};
+
+    // Adjust content based on teaching style
+    const includeAnalogies = teachingStyle !== 'advanced';
+    const includeRemedial = teachingStyle === 'remedial';
+    const languageSimplified = teachingStyle === 'remedial';
+
     return {
       id: `teaching_${index}`,
       type: 'teaching',
       subtype: 'conceptual',
       concept: concept.term,
       title: `Learning: ${concept.term}`,
+      teachingStyle: teachingStyle || 'standard',
 
       content: {
-        // Real-world analogy for beginners
-        analogy: this.generateAnalogy(concept),
+        // Real-world analogy for beginners (unless advanced)
+        analogy: includeAnalogies ? this.generateAnalogy(concept) : null,
 
         // Core explanation
         explanation: concept.definition || `Understanding ${concept.term} is important for the topic.`,
 
         // Key points (bulleted, simple)
-        keyPoints: this.extractKeyPoints(concept),
+        keyPoints: languageSimplified ? this.extractSimplifiedKeyPoints(concept) : this.extractKeyPoints(concept),
 
-        // Everyday example
-        everydayExample: this.generateEverydayExample(concept)
+        // Everyday example (unless advanced)
+        everydayExample: includeAnalogies ? this.generateEverydayExample(concept) : null
       },
 
-      // Language adaptation for beginners
-      languageNote: isBeginner ? 'Using simple language with examples.' : null,
+      // Language adaptation based on teaching style
+      languageNote: languageSimplified ? 'Using simplified language with extra examples.' : (isBeginner ? 'Using simple language with examples.' : null),
 
-      estimatedTime: 3,
-      isBeginnerFriendly: isBeginner,
+      estimatedTime: teachingStyle === 'remedial' ? 4 : 3,
+      isBeginnerFriendly: teachingStyle !== 'advanced',
       designPrinciples: [
         'proactive-teaching',
         'chunked-delivery'

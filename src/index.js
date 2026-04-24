@@ -17,6 +17,14 @@ const InteractiveDesigner = require('./generators/InteractiveDesigner');
 const OutputRenderer = require('./outputs/OutputRenderer');
 const PreviewManager = require('./preview/PreviewManager');
 
+// 导入优化模块
+const LearnerProfileStore = require('./optimization/LearnerProfileStore');
+const SessionAnalyticsCollector = require('./optimization/SessionAnalyticsCollector');
+const OptimizationEngine = require('./optimization/OptimizationEngine');
+
+// 创建store实例
+const profileStore = new LearnerProfileStore();
+
 /**
  * 检测文本的主要语言
  * @param {string} text - 输入文本
@@ -89,15 +97,26 @@ async function generateInteractiveLearning(context, options = {}) {
     
     // 5. 设计互动学习体验
     console.log(`[${sessionId}] 步骤4：设计互动学习体验`);
+
+    // 获取学习者配置（用于个性化优化）
+    let learnerProfile = null;
+    if (options.learnerId) {
+      learnerProfile = await profileStore.getProfile(options.learnerId);
+      console.log(`[${sessionId}] 已加载学习者配置：${options.learnerId}，历史会话：${learnerProfile.sessionHistory?.length || 0}`);
+    }
+
     const interactiveDesign = await InteractiveDesigner.design(
       analysisResult,
       {
-        applyPrinciples: ['progressive-disclosure', 'contextual-narrative', 'constructive-failure', 'problem-solving-opportunities'],
+        applyPrinciples: ['progressive-disclosure', 'contextual-narrative', 'constructive-failure', 'problem-solving-opportunities', 'adaptive-adjustment'],
         generateVisuals: options.generateVisuals !== false,
-        neutralInterface: true, // 使用中性化界面，避免游戏元素
-        language: languageCode, // 传递检测到的语言代码
+        neutralInterface: true,
+        language: languageCode,
         tempDir: tempDir,
-        context: context
+        context: context,
+        learnerId: options.learnerId,
+        learnerProfile: learnerProfile,
+        optimizationDirectives: learnerProfile ? OptimizationEngine.generateDirectives(learnerProfile, analysisResult) : null
       }
     );
     
@@ -119,8 +138,24 @@ async function generateInteractiveLearning(context, options = {}) {
       console.log(`[${sessionId}] 步骤6：预览验证`);
       previewUrl = await PreviewManager.preview(renderResult.outputPath, tempDir, context);
     }
-    
-    // 7. 准备返回结果
+
+    // 8. 收集会话数据并更新学习者配置（用于个性化优化）
+    if (options.learnerId) {
+      console.log(`[${sessionId}] 步骤7：收集会话数据并更新学习者配置`);
+      try {
+        const sessionAnalytics = SessionAnalyticsCollector.collect(
+          { sessionId, design: interactiveDesign },
+          options.learnerResponse || {}
+        );
+        await profileStore.updateProfile(options.learnerId, sessionAnalytics);
+        console.log(`[${sessionId}] 学习者配置已更新：${options.learnerId}`);
+      } catch (analyticsError) {
+        // 不因 analytics 失败而中断主流程
+        console.error(`[${sessionId}] 更新学习者配置失败：`, analyticsError.message);
+      }
+    }
+
+    // 9. 准备返回结果
     const result = {
       success: true,
       sessionId,
@@ -131,7 +166,8 @@ async function generateInteractiveLearning(context, options = {}) {
         files: renderResult.generatedFiles
       },
       preview: previewUrl,
-      tempDir: tempDir
+      tempDir: tempDir,
+      learnerId: options.learnerId || null
     };
     
     console.log(`[${sessionId}] 处理完成，输出文件：${renderResult.outputPath}`);
@@ -157,7 +193,7 @@ async function generateInteractiveLearning(context, options = {}) {
  * @param {Object} params - 技能参数
  */
 module.exports = async function main(context, params) {
-  const { input, inputType = 'text', outputFormat = 'html', targetAudience = 'student' } = params;
+  const { input, inputType = 'text', outputFormat = 'html', targetAudience = 'student', learnerId = null, learnerResponse = null } = params;
   
   if (!input) {
     throw new Error('缺少输入内容。请提供文件路径或文本内容。');
@@ -170,7 +206,9 @@ module.exports = async function main(context, params) {
       outputFormat,
       targetAudience,
       generateVisuals: true,
-      previewInBrowser: true
+      previewInBrowser: true,
+      learnerId,
+      learnerResponse
     });
     
     // 构建用户友好的输出消息
