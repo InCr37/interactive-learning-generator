@@ -16,6 +16,7 @@ const ContentAnalyzer = require('./analyzers/ContentAnalyzer');
 const InteractiveDesigner = require('./generators/InteractiveDesigner');
 const OutputRenderer = require('./outputs/OutputRenderer');
 const PreviewManager = require('./preview/PreviewManager');
+const CheatSheetGenerator = require('./outputs/CheatSheetGenerator');
 
 // 导入优化模块
 const LearnerProfileStore = require('./optimization/LearnerProfileStore');
@@ -96,7 +97,7 @@ async function generateInteractiveLearning(context, options = {}) {
     );
     
     // 5. 设计互动学习体验
-    console.log(`[${sessionId}] 步骤4：设计互动学习体验`);
+    console.log(`[${sessionId}] 步骤5：设计互动学习体验`);
 
     // 获取学习者配置（用于个性化优化）
     let learnerProfile = null;
@@ -121,7 +122,7 @@ async function generateInteractiveLearning(context, options = {}) {
     );
     
     // 6. 渲染输出
-    console.log(`[${sessionId}] 步骤5：渲染输出`);
+    console.log(`[${sessionId}] 步骤6：渲染输出`);
     const outputFormat = options.outputFormat || 'html';
     const renderResult = await OutputRenderer.render(
       interactiveDesign,
@@ -135,13 +136,28 @@ async function generateInteractiveLearning(context, options = {}) {
     // 7. 预览验证（如果启用）
     let previewUrl = null;
     if (options.previewInBrowser !== false && (outputFormat === 'html' || outputFormat === 'twine')) {
-      console.log(`[${sessionId}] 步骤6：预览验证`);
+      console.log(`[${sessionId}] 步骤7：预览验证`);
       previewUrl = await PreviewManager.preview(renderResult.outputPath, tempDir, context);
     }
 
-    // 8. 收集会话数据并更新学习者配置（用于个性化优化）
+    // 8. 生成并保存速查表/总结
+    console.log(`[${sessionId}] 步骤8：生成速查表`);
+    let cheatSheetPath = null;
+    try {
+      const cheatSheetResult = await CheatSheetGenerator.generateAndSave(interactiveDesign, {
+        outputDir: tempDir,
+        inputPath: options.input
+      });
+      cheatSheetPath = cheatSheetResult.outputPath;
+      console.log(`[${sessionId}] 速查表已生成：${cheatSheetPath}`);
+    } catch (cheatSheetError) {
+      console.error(`[${sessionId}] 生成速查表失败：`, cheatSheetError.message);
+      // 不因失败而中断主流程
+    }
+
+    // 9. 收集会话数据并更新学习者配置（用于个性化优化）
     if (options.learnerId) {
-      console.log(`[${sessionId}] 步骤7：收集会话数据并更新学习者配置`);
+      console.log(`[${sessionId}] 步骤9：收集会话数据并更新学习者配置`);
       try {
         const sessionAnalytics = SessionAnalyticsCollector.collect(
           { sessionId, design: interactiveDesign },
@@ -155,7 +171,7 @@ async function generateInteractiveLearning(context, options = {}) {
       }
     }
 
-    // 9. 准备返回结果
+    // 10. 准备返回结果
     const result = {
       success: true,
       sessionId,
